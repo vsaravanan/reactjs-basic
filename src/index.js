@@ -1,55 +1,46 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const ParamsExample = () => (
+const CustomLinkExample = () => (
   <Router>
     <div>
-      <h2>Accounts</h2>
-      <ul>
-        <li>
-          <Link to="/netflix">Netflix</Link>
-        </li>
-        <li>
-          <Link to="/zillow-group">Zillow Group</Link>
-        </li>
-        <li>
-          <Link to="/yahoo">Yahoo</Link>
-        </li>
-        <li>
-          <Link to="/modus-create">Modus Create</Link>
-        </li>
-      </ul>
-
-      <Route path="/:id" component={Child} />
-
-      {/*
-         It's possible to use regular expressions to control what param values should be matched.
-            * "/order/asc"  - matched
-            * "/order/desc" - matched
-            * "/order/foo"  - not matched
-      */}
-      <Route
-        path="/order/:direction(asc|desc)"
-        component={ComponentWithRegex}
-      />
+      <OldSchoolMenuLink activeOnlyWhenExact={true} to="/" label="Home" />
+      <OldSchoolMenuLink to="/about" label="About" />
+      <hr />
+      <Route exact path="/" component={Home} />
+      <Route path="/about" component={About} />
     </div>
   </Router>
 );
 
-const Child = ({ match }) => (
+const OldSchoolMenuLink = ({ label, to, activeOnlyWhenExact }) => (
+  <Route
+    path={to}
+    exact={activeOnlyWhenExact}
+    children={({ match }) => (
+      <div className={match ? "active" : ""}>
+        {match ? "> " : ""}
+        <Link to={to}>{label}</Link>
+      </div>
+    )}
+  />
+);
+
+const Home = () => (
   <div>
-    <h3>ID: {match.params.id}</h3>
+    <h2>Home</h2>
   </div>
 );
 
-const ComponentWithRegex = ({ match }) => (
+const About = () => (
   <div>
-    <h3>Only asc/desc are allowed: {match.params.direction}</h3>
+    <h2>About</h2>
   </div>
 );
 
-export default ParamsExample;
+export default CustomLinkExample;
 
 
-ReactDOM.render(<ParamsExample/>, document.getElementById('root'))
+ReactDOM.render(<CustomLinkExample/>, document.getElementById('root'))
