@@ -64,7 +64,7 @@ const Topics = ({ match }) => (
 
 const Topic = ({ match }) => (
   <div>
-    <h3>{match.params.topicId}</h3>
+    <h3>{match.params.topicId} {match.url}</h3>
   </div>
 );
 
