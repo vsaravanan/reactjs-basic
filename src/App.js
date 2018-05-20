@@ -1,29 +1,40 @@
 import React, { Component } from 'react'
 
+import { actionCreators } from './todoListRedux'
 import List from './List'
 import Input from './Input'
 import Title from './Title'
 
 export default class App extends Component {
 
-  state = {
-    todos: ['Click to remove', 'Learn React', 'Write Code', 'Ship App'],
+  state = {}
+
+  componentWillMount() {
+    const {store} = this.props
+
+    const {todos} = store.getState()
+    this.setState({todos})
+
+    this.unsubscribe = store.subscribe(() => {
+      const {todos} = store.getState()
+      this.setState({todos})
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
   }
 
   onAddTodo = (text) => {
-    const {todos} = this.state
+    const {store} = this.props
 
-    this.setState({
-      todos: [text, ...todos],
-    })
+    store.dispatch(actionCreators.add(text))
   }
 
   onRemoveTodo = (index) => {
-    const {todos} = this.state
+    const {store} = this.props
 
-    this.setState({
-      todos: todos.filter((todo, i) => i !== index),
-    })
+    store.dispatch(actionCreators.remove(index))
   }
 
   render() {
