@@ -1,45 +1,27 @@
 
-
-
 import ReactDOM from 'react-dom';
-
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-const PEEPS = [
-  { id: 0, name: "Michelle", friends: [1, 2, 3] },
-  { id: 1, name: "Sean", friends: [0, 3] },
-  { id: 2, name: "Kim", friends: [0, 1, 3] },
-  { id: 3, name: "David", friends: [1, 2] }
-];
+class NameForm extends React.Component {
+   handleSubmit = (event) => {
+       event.preventDefault();
+       console.log(event.target[0].value);
+       console.log(event.target.elements.username.value);
+       console.log(this.userName.value)
+   }
 
-const find = id => PEEPS.find(p => p.id == id);
-
-const RecursiveExample = () => (
-  <Router>
-    <Person match={{ params: { id: 0 }, url: "" }} />
-  </Router>
-);
-
-const Person = ({ match }) => {
-  const person = find(match.params.id);
-
-  return (
-    <div>
-      <h3>{person.name}’s Friends</h3>
-      <ul>
-        {person.friends.map(id => (
-          <li key={id}>
-            <Link to={`${match.url}/${id}`}>{find(id).name}</Link>
-          </li>
-        ))}
-      </ul>
-      <Route path={`${match.url}/:id`} component={Person} />
-    </div>
-  );
-};
-
-export default RecursiveExample;
+   render() {
+       return (
+           <form onSubmit={this.handleSubmit}>
+               <label>
+                   name:
+                   <input name="username" ref={inputNode => (this.userName = inputNode)} type="text" />
+               </label>
+               <button type='Submit'>Submit</button>
+           </form>
+       )
+   }
+}
 
 
-ReactDOM.render(<RecursiveExample/>, document.getElementById('root'))
+ReactDOM.render(<NameForm/>, document.getElementById('root'))
