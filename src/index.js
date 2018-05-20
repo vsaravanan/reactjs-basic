@@ -3,26 +3,31 @@ import ReactDOM from 'react-dom';
 import React from "react";
 
 class NameForm extends React.Component {
-   handleSubmit = (event) => {
+    state = {error: this.props.getErrorMessage('')}
+    handleSubmit = (event) => {
        event.preventDefault();
        const value = event.target.elements.username.value;
-       const error = this.props.getErrorMessage(value);
-       if (error) {
-        alert(`error: ${error}`);
-       } else {
         alert(`success: ${value}`);
-       }
 
    }
 
+   handleChange = (event) => {
+        const {value} = event.target;
+        this.setState({
+            error: this.props.getErrorMessage(value)
+        })
+   }
+
    render() {
+        const {error} = this.state
        return (
            <form onSubmit={this.handleSubmit}>
                <label>
                    name:
-                   <input name="username"  type="text" />
+                   <input name="username" onChange={this.handleChange} type="text" />
                </label>
-               <button type='Submit'>Submit</button>
+               {error ? ( <div style={{color:'red'}}>{error} </div> ) : null }
+               <button type='submit' disabled={Boolean(error)}>Submit</button>
            </form>
        )
    }
