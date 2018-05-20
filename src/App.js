@@ -16,7 +16,7 @@ class UserCompany extends React.Component {
           }
         }`
       },
-      headers: {Authorization: `bearer 9d43813e640a47e7a6881460fa05b046cdc5f2a0`},
+      headers: {Authorization: `bearer 6cde3e34072e88d43e4e5f7cdda9f1c7ba36c7f1`},
     })
     .then(response => { this.setState({company: response.data.data.user.company, loaded: true}) },
     error => { this.setState({error, loaded: true})},
@@ -27,43 +27,25 @@ class UserCompany extends React.Component {
     this.fetchCompany()
   }
   
-  componentDidUpdate(prevProps) {
-    if (prevProps.username !== this.props.username)
-    {
-      this.fetchCompany()
-    }
-  }
-
   render() {
     return (
-      this.state.loaded ?
-      this.state.error ? 'ERROR' : this.state.company || 'Unknown' 
-      : 'loading...'
+      this.state.company || 'Unknown' 
+
     )
   }
 }
+const username = 'vsaravanan'
+const element = (
+<div>
+<div>
+  {`@${username} works at `}
+  <UserCompany username={username} />
+</div>
+</div>
+)
 
 export default class App extends React.Component {
-  state = {username: undefined}
-  handleSubmit = e => {
-    e.preventDefault()
-    this.setState({
-      username: this.inputNode.value,
-    })
-  }
   render() {
-    const {username} = this.state
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            ref={node => (this.inputNode = node)}
-          />
-        </form>
-        {username ? (
-          <UserCompany username={username} />
-        ) : null}
-      </div>
-    )
+    return ( element) ;
   }
 }
