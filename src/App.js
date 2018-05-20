@@ -1,66 +1,30 @@
 import React, { Component } from 'react'
+import './App.css'
 
-import { actionCreators } from './todoListRedux'
-import List from './List'
-import Input from './Input'
-import Title from './Title'
+import axios from 'axios'
 
-export default class App extends Component {
+class App extends Component {
+  constructor () {
+    super()
+    this.state = {
+      username: ''
+    }
 
-  state = {}
-
-  componentWillMount() {
-    const {store} = this.props
-
-    const {todos} = store.getState()
-    this.setState({todos})
-
-    this.unsubscribe = store.subscribe(() => {
-      const {todos} = store.getState()
-      this.setState({todos})
-    })
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  componentWillUnmount() {
-    this.unsubscribe()
+  handleClick () {
+    axios.get('https://api.github.com/users/vsaravanan')
+      .then(response => this.setState({username: response.data.name}))
   }
 
-  onAddTodo = (text) => {
-    const {store} = this.props
-
-    store.dispatch(actionCreators.add(text))
-  }
-
-  onRemoveTodo = (index) => {
-    const {store} = this.props
-
-    store.dispatch(actionCreators.remove(index))
-  }
-
-  render() {
-    const {todos} = this.state
-
+  render () {
     return (
-      <div style={styles.container}>
-        <Title>
-          To-Do List
-        </Title>
-        <Input
-          placeholder={'Type a todo, then hit enter!'}
-          onSubmitEditing={this.onAddTodo}
-        />
-        <List
-          list={todos}
-          onClickItem={this.onRemoveTodo}
-        />
+      <div className='button__container'>
+        <button className='button' onClick={this.handleClick}>Click Me</button>
+        <p>{this.state.username}</p>
       </div>
     )
   }
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-  }
-}
+export default App
