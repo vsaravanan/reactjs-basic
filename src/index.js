@@ -5,9 +5,14 @@ import React from "react";
 class NameForm extends React.Component {
    handleSubmit = (event) => {
        event.preventDefault();
-       console.log(event.target[0].value);
-       console.log(event.target.elements.username.value);
-       console.log(this.userName.value)
+       const value = event.target.elements.username.value;
+       const error = this.props.getErrorMessage(value);
+       if (error) {
+        alert(`error: ${error}`);
+       } else {
+        alert(`success: ${value}`);
+       }
+
    }
 
    render() {
@@ -15,7 +20,7 @@ class NameForm extends React.Component {
            <form onSubmit={this.handleSubmit}>
                <label>
                    name:
-                   <input name="username" ref={inputNode => (this.userName = inputNode)} type="text" />
+                   <input name="username"  type="text" />
                </label>
                <button type='Submit'>Submit</button>
            </form>
@@ -24,4 +29,16 @@ class NameForm extends React.Component {
 }
 
 
-ReactDOM.render(<NameForm/>, document.getElementById('root'))
+ReactDOM.render(
+    <NameForm
+        getErrorMessage={value => {
+            if (value.length < 3) {
+                return `Value must be at least 3 characters`;
+            }
+            if (!value.includes('s')) {
+                return `Value does not include "s"`
+            }
+            return null
+        }}
+    />, 
+    document.getElementById('root'));
