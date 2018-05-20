@@ -16,7 +16,7 @@ class UserCompany extends React.Component {
           }
         }`
       },
-      headers: {Authorization: `bearer e74b9aa736c3488d73928b6ac82ba55aaa6a931e`},
+      headers: {Authorization: `bearer 9d43813e640a47e7a6881460fa05b046cdc5f2a0`},
     })
     .then(response => { this.setState({company: response.data.data.user.company, loaded: true}) },
     error => { this.setState({error, loaded: true})},
